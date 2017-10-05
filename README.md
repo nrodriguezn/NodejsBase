@@ -1,18 +1,33 @@
 # NodejsBaseApi
 
+Instalando MongoDB
 
-Se desarrollaran productos, rutas de tipo:
-  * get
-  * post
-  * put
-  * delete
+```
+npm install -i -S mongoose
+MongoD  //para iniciar la base de datos
+mongo //ingresamos al shell de moongo
+```
+una vez instalado mongo necesitamos un package para usarla en react-native, la libreria se llama mongoose
 
-index js
-```index js
+```
+npm i -S mongoose
+```
+
+asi se deberia agregar la libreria automaticamente
+Se importa mongoose en index.js
+
+```
+const mongoose = require('mongoose')
+```
+
+Asi entonces, index.js debe parecer a
+
+```
 'use strict'
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -37,7 +52,7 @@ app.get('/api/product/:productid', (req,res)=>{
 })
 app.post('/api/product', (req, res) =>{
     console.log(req.body)//viene lo del cuerpo de la peticion
-  res.status(200).send({message: `el producto se ha recibido`})
+    res.status(200).send({message: `el producto se ha recibido`})
 })
 app.put('/api/product/:productId', (req, res)=>{
 
@@ -47,20 +62,12 @@ app.delete('/api/delete/:productId', (req, res) =>{
 })
 
 
+mongoose.connect('mongodb://localhost:/27017/shop', (err, res) =>{
+  if(err) throw err
+  console.log('conexion a la base de datos establecida')
+  app.listen(port, ()=>{
+    console.log(`API rest corriendo en loclhost:${port}`)
+  })
 
-app.listen(port, ()=>{
-  console.log(`API rest corriendo en loclhost:${port}`)
 })
-
 ```
-
-para ingresar un producto en postman:
-  ```
-  method POSt
-  BODY:_
-    name MacBook Pr
-    Price 1200000
-    photo mackbook.png
-    category laptop
-  ```
-  en la terminal se podrá ver el body del producto enviado.
