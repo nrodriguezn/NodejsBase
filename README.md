@@ -37,7 +37,7 @@ app.get('/api/product/:productid', (req,res)=>{
 })
 app.post('/api/product', (req, res) =>{
     console.log(req.body)//viene lo del cuerpo de la peticion
-    res.send(200, {message: `el producto se ha recibido`})
+  res.status(200).send({message: `el producto se ha recibido`})
 })
 app.put('/api/product/:productId', (req, res)=>{
 
@@ -63,4 +63,4 @@ para ingresar un producto en postman:
     photo mackbook.png
     category laptop
   ```
-  en la terminal se podrá ver el body del producto enviado. 
+  en la terminal se podrá ver el body del producto enviado.
