@@ -1,73 +1,49 @@
 # NodejsBaseApi
 
-Instalando MongoDB
+Schema con mongoose
 
-```
-npm install -i -S mongoose
-MongoD  //para iniciar la base de datos
-mongo //ingresamos al shell de moongo
-```
-una vez instalado mongo necesitamos un package para usarla en react-native, la libreria se llama mongoose
+se comienza a modular la aplicacion y luego se reactorizara
 
-```
-npm i -S mongoose
-```
-
-asi se deberia agregar la libreria automaticamente
-Se importa mongoose en index.js
-
-```
-const mongoose = require('mongoose')
-```
-
-Asi entonces, index.js debe parecer a
+1) En models/product.js, se crea el Schema de products para poder acceder a este desde el resto de la app
 
 ```
 'use strict'
 
-const express = require('express')
-const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const app = express()
-const port = process.env.PORT || 3001
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-app.get('/hola', (req, res) =>{
-  res.send({message: 'Hola Mundo'})
-})//devuelve un callback que es la peticion y la respuesta
-
-app.get('/holap/:name', (req, res) =>{
-  res.send({send: `Hola ${req.params.name}!`})
+const ProductSchema = Schema({
+  name: String,
+  picture: String,
+  price: { type: Number, default: 0 },
+  category: { type: String, enum: ['computers', 'phones', 'accesories']},
+  description: String
 })
 
-app.get('/api/product', (req, res) => {
-  res.send(200, {products: []})
-})
+module.exports = mongoose.model('Product', ProductSchema) //asi desde el resto de la aplicacion se sera accesible al modelo
 
-app.get('/api/product/:productid', (req,res)=>{
+```
 
-})
+entonces para usarlo se usa
+
+```
+const Product = require('./models/product') //indicando donde esta
+
 app.post('/api/product', (req, res) =>{
-    console.log(req.body)//viene lo del cuerpo de la peticion
-    res.status(200).send({message: `el producto se ha recibido`})
-})
-app.put('/api/product/:productId', (req, res)=>{
+  console.log("POST /api/product")
+  console.log(req.body)
 
-})
-app.delete('/api/delete/:productId', (req, res) =>{
+  let product = new Product()
+  product.name = req.body.name
+  product.picture = req.body.picture
+  product.price = req.body.price
+  product.category = req.body.category
+  product.description = req.body.description
 
-})
-
-
-mongoose.connect('mongodb://localhost:/27017/shop', (err, res) =>{
-  if(err) throw err
-  console.log('conexion a la base de datos establecida')
-  app.listen(port, ()=>{
-    console.log(`API rest corriendo en loclhost:${port}`)
+  product.save((err, productStored) =>{
+    if (err) res.status(500).send({message: `Error al guardar en la base de datos: ${err}`})
+    res.status(200).send({product: productStored})
   })
-
 })
+
 ```
