@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/nrodriguezn/NodejsBase#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
+    "crypto": "^1.0.1",
     "express": "^4.16.1",
     "mongoose": "^4.12.0"
   },
