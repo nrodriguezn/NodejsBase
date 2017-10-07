@@ -40,4 +40,21 @@ const ProductSchema = Schema({
   category: { type: String, enum: ['computers', 'phones', 'accesories']},
   description: String
 })
+---
+const UserSchema = new Schema({
+  email: { type: String, unique: true, lowercase: true},
+  displayName: String,
+  avatar: String,
+  password: { type: String, select: false },  //asi la contraseña no la envia al cliente
+  signupDate: { type: Date, default: Date.now() },
+  lastLogin: Date
+})
+
 ```
+manejo de fechas en js
+  npm i -S moment
+
+para auth:
+   npm i -S jwt-simple
+
+se usa un servicio, es una funcion que ayuda a realizar determinadas acciones que se repiten en el codigo, por lo mismo no tienen por que estar en el mismo fichero, es mejor tenerlas separadas
