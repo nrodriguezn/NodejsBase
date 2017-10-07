@@ -24,3 +24,20 @@
   *Contiene todas las rutas de la app*
 5. config.js
   *variables de entorno*
+
+
+##Schema Creados
+
+const bcrypt = require('bcrypt-nodejs')
+en terminal: npm i -S bcrypt-nodejs
+
+
+```
+const ProductSchema = Schema({
+  name: String,
+  picture: String,
+  price: { type: Number, default: 0 },
+  category: { type: String, enum: ['computers', 'phones', 'accesories']},
+  description: String
+})
+```
