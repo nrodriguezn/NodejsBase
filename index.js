@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const Product = require('./models/product')
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -19,16 +20,42 @@ app.get('/holap/:name', (req, res) =>{
 })
 
 app.get('/api/product', (req, res) => {
-  res.send(200, {products: []})
+  Product.find({}, (err, products) => {
+    if (err) return res.status(500).send({message: `Error al realizar la peticion ${err}`})
+    if (!products) return res.status(404).send({message: `No existen productos`})
+
+    res.send(200, { products })
+  })
+
 })
 
 app.get('/api/product/:productid', (req,res)=>{
+  let productId = req.params.productid
 
+  Product.findById(productId, (err, product) => {
+    if(err) return res.status(500).send({message: `Error al realizar la peticion ${err}`})
+    if (!product) return res.status(404).send({message: `El producto no existe`})
+
+    res.status(200).send({product: product})
+  })
 })
+
 app.post('/api/product', (req, res) =>{
-    console.log(req.body)//viene lo del cuerpo de la peticion
-    res.status(200).send({message: `el producto se ha recibido`})
+  console.log('POST /api/product1')
+  console.log(req.body)
+  let product = new Product()
+  product.name = req.body.name
+  product.picture = req.body.picture
+  product.price = req.body.price
+  product.category = req.body.category
+  product.description = req.body.description
+
+  product.save((err, productStored) =>{
+    if (err) res.status(500).send({message: `Error al guardar en la base de datos: ${err}`})
+    res.status(200).send({product: productStored})
+  })
 })
+
 app.put('/api/product/:productId', (req, res)=>{
 
 })
@@ -37,7 +64,7 @@ app.delete('/api/delete/:productId', (req, res) =>{
 })
 
 
-mongoose.connect('mongodb://localhost:27017/shop', (err, res) =>{
+mongoose.connection.openUri('mongodb://localhost:27017/shop', (err, res) =>{
   if(err) {
     return console.log(`error al conectar a la base de datos ${err}`)
   }  console.log('conexion a la base de datos establecida')
