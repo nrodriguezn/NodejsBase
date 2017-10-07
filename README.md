@@ -47,3 +47,5 @@ app.post('/api/product', (req, res) =>{
 })
 
 ```
+
+Es importante, en postman, en body, marcar la opcion x-www-form-urlencoded
