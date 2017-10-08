@@ -8,7 +8,7 @@ const api = express.Router()
 
 api.get('/product', ProductCtrl.getProducts)
 api.get('/product/:productid', ProductCtrl.getProduct)
-api.post('/product', ProductCtrl.saveProduct)
+api.post('/product', auth, ProductCtrl.saveProduct)
 api.put('/product/:productId', ProductCtrl.updateProduct)
 api.delete('/delete/:productId', ProductCtrl.deleteProduct)
 api.post('/signup', userCtrl.signUp)
