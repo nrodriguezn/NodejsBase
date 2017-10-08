@@ -12,7 +12,7 @@ api.post('/product', ProductCtrl.saveProduct)
 api.put('/product/:productId', ProductCtrl.updateProduct)
 api.delete('/delete/:productId', ProductCtrl.deleteProduct)
 api.post('/signup', userCtrl.signUp)
-api.post('/signip', userCtrl.signIn)
+api.post('/signin', userCtrl.signIn)
 api.get('/private', auth, (req, res) => {
 res.status(200).send({message: 'Tienes autorizacion'})
 })
