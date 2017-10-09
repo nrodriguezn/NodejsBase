@@ -1,0 +1,25 @@
+<form  id="login" method="post"> <!-- se hace con ajax, por eso los metodos se borran-->
+  <input type="email" name="email" value="" placeholder="Tu Email">
+  <br><br>
+  <input type="password" name="password" value="" placeholder="Tu Contraseña">
+  <br><br>
+
+  <input type="submit" name="" value="Login">
+</form>
+
+<script type="text/javascript">
+  const formLogin = document.querySelector('#login')
+  const formData = new FormData(formLogin)  //toma toods los valores imput y crea un objeto para enviar los datos
+
+  formLogin.addEventListener('submit', event => {
+    event.preventDefault();//para que no recargue la pagina
+    fetch('/api/signin', {
+      method: 'POST',
+      body: formData
+    })  //esto recibe una promesa con una respuesta
+    .then(res => res.json())
+    .then(data => {
+      localStorage.setItem('token', data.token)
+    })
+  })
+</script>

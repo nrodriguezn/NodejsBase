@@ -11,9 +11,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.engine('.hbs', hbs({
   defaultLayout: 'default',
-  ext: 'hbs'
+  extname: 'hbs'
 }))
-app.set('view-engine', '.hbs')
+app.set('view engine', '.hbs')
 app.use('/api', api)
+app.get('/login', (req, res) => {
+  res.render('login')
+})
+app.get('/product',  (req, res) =>{
+  res.render('product')
+})
 
 module.exports = app
